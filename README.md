@@ -1,8 +1,4 @@
-
 # TodoApp
-
-## 参考サイト
-https://jsprimer.net/use-case/todoapp/
 
 ## 実行
 ローカルサーバを起動する
@@ -12,3 +8,7 @@ https://jsprimer.net/use-case/todoapp/
 次のURLをブラウザで開いてください。
 
 `http://localhost:3000`
+
+
+## 参考サイト
+https://jsprimer.net/use-case/todoapp/
