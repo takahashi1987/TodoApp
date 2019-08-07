@@ -5,7 +5,7 @@ $.ajax({
 }).then((tasks) => {
   $("#js-todo-count").text(`${tasks.length}`);
   tasks.forEach((task) => {
-    if(task.status === "completed"){
+    if(task.status === "incompleted"){
       addTaskElement(task);
     } else {
       addTaskElement(task);

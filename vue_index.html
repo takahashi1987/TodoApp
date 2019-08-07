@@ -1,0 +1,39 @@
+<html lang="ja">
+  <head>
+    <meta charaset="utf-8" />
+    <title>Todo App</title>
+    <link href="https://jsprimer.net/use-case/todoapp/final/final/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style> span.done {text-decoration: line-through;} </style>
+  </head>
+  <body>
+    <div id="todoapp" class="todoapp">
+      <form id="js-form" @submit.prevent="addTask">
+        <input
+          id="js-form-input"
+          class="new-todo"
+          type="text"
+          placeholder="What need to be done?"
+          autocomplete="off"
+          v-model="newTask"
+        />
+      </form>
+      <div id="js-todo-list" class="todo-list">
+        <span v-for="(task, index) in tasks">
+          <li>
+            <input @click="onCheck(task, index)" class="checkbox" type="checkbox" :checked="task.status == 'completed'">
+              <span :class="{ done: task.status == 'completed' }">{{ task.title }}</span>
+              <button @click="onDelete(task, index)" class="delete">x</button>
+            </input>
+          </li>
+        </span>
+      </div>
+      <footer class="footer">
+        <span>Todoアイテム数:</span><span>{{ tasks.length }}</span>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./App_Vue.js"></script>
+  </body>
+</html>
