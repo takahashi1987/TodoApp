@@ -1,39 +1,42 @@
 new Vue({
   el: "#todoapp",
-  // 一覧表示
   data(){
     return {
       tasks: [],
-      newTask: ""
+      newTask: "",
+      token:"",
+      name:"",
+      password:""
     }
   },
   mounted(){
-    axios
-      .get("http://localhost:3100/tasks")
-      .then((tasks) => {
-        this.tasks = tasks.data.reverse()
-      })
+    if(Cookies.get("token")){
+      this.token = Cookies.get("token")
+      this.getLists()
+    }
   },
   // 追加
   methods: {
-    addTask(e){
-      if(this.newTask === ""){
-        alert("タスクを入力してください")
-      } else {
+    addTask(){
+      if(this.newTask){
         axios
           .post("http://localhost:3100/tasks", {
             title: this.newTask
+          }, {
+            headers: { Authorization: `Token ${this.token}` }
           })
           .then((task) => {
             this.tasks.unshift(task.data)
             this.newTask = ""
           })
+      } else {
+        alert("タスクを入力してください")
       }
     },
     // 削除
     onDelete(task, index){
       axios
-        .delete(`http://localhost:3100/tasks/${task.id}`)
+        .delete(`http://localhost:3100/tasks/${task.id}`, { headers: { Authorization: `Token ${this.token}` }})
         .then(() => {
           this.tasks.splice(index, 1)
         })
@@ -41,11 +44,34 @@ new Vue({
     // チェック
     onCheck(task, index){
       axios
-        .patch(`http://localhost:3100/tasks/${task.id}`)
+        .patch(`http://localhost:3100/tasks/${task.id}`, {}, { headers: { Authorization: `Token ${this.token}` }})
         .then((task) => {
           this.tasks.splice(index, 1, task.data)
-
         })
+    },
+    // 一覧表示
+    getLists(){
+      axios
+        .get("http://localhost:3100/tasks", { headers: { Authorization: `Token ${this.token}` }})
+        .then((tasks) => {
+          this.tasks = tasks.data.reverse()
+        })
+    },
+    // サインイン
+    singIn(){
+      axios
+        .post("http://localhost:3100/login/login", {
+          name: this.name,
+          password: this.password
+        })
+        .then((token) => {
+          this.token = token.data
+          Cookies.set("token", this.token)
+          this.getLists()
+       })
+       .catch(() => {
+         alert("error")
+       })
     }
   }
 })
