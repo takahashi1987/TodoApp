@@ -1,0 +1,32 @@
+<html lang="ja">
+  <head>
+    <meta charaset="utf-8" />
+    <title>Todo App</title>
+    <link href="https://jsprimer.net/use-case/todoapp/final/final/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style> span.done {text-decoration: line-through;} </style>
+  </head>
+  <body>
+    <div class="todoapp">
+      <form id="js-form">
+        <input
+          id="js-form-input"
+          class="new-todo"
+          type="text"
+          placeholder="What need to be done?"
+          autocomplete="off"
+        />
+      </form>
+      <div id="js-todo-list" class="todo-list">
+      </div>
+      <footer class="footer">
+        <span>Todoアイテム数:</span><span id="js-todo-count">0</span>
+      </footer>
+    </div>
+    <!-- <script src="./index.js" type="module"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./App_jQuery.js"></script>
+  </body>
+</html>

@@ -49,7 +49,7 @@ new Vue({
           this.tasks.splice(index, 1, task.data)
         })
     },
-    // 一覧表示
+    // 一覧
     getLists(){
       axios
         .get("http://localhost:3100/tasks", { headers: { Authorization: `Token ${this.token}` }})
@@ -72,6 +72,11 @@ new Vue({
        .catch(() => {
          alert("error")
        })
+    },
+    // サインアウト
+    singOut(){
+      this.token = ""
+      Cookies.remove("token")
     }
   }
 })
