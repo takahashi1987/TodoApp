@@ -7,49 +7,26 @@
     <style> span.done {text-decoration: line-through;} </style>
   </head>
   <body>
-    <div id="todoapp" class="todoapp">
-      <form id="js-form" @submit.prevent="addTask" v-if="token">
+    <div class="todoapp">
+      <form id="js-form">
         <input
           id="js-form-input"
           class="new-todo"
           type="text"
           placeholder="What need to be done?"
           autocomplete="off"
-          v-model="newTask"
         />
       </form>
-      <div id="js-todo-list" class="todo-list" v-if="token">
-        <span v-for="(task, index) in tasks">
-          <li>
-            <input @click="onCheck(task, index)" class="checkbox" type="checkbox" :checked="task.status == 'completed'">
-              <span :class="{ done: task.status == 'completed' }">{{ task.title }}</span>
-              <button @click="onDelete(task, index)" class="delete">x</button>
-            </input>
-          </li>
-        </span>
+      <div id="js-todo-list" class="todo-list">
       </div>
-      <footer class="footer" v-if="token">
-        <span>Todoアイテム数:</span><span>{{ tasks.length }}</span>
+      <footer class="footer">
+        <span>Todoアイテム数:</span><span id="js-todo-count">0</span>
       </footer>
-      <form v-if="!token" method="post" @submit.prevent="singIn">
-      <table>
-        <tr>
-          <td>name</td>
-          <td><input type="text" v-model="name"></td>
-        </tr>
-        <tr>
-          <td>password</td>
-          <td><input type="text" v-model="password"></td>
-        </tr>
-        <tr>
-          <td><input type="submit" value="singin"></td>
-        </tr>
-      </table>
-      </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="./App_Vue.js"></script>
+    <!-- <script src="./index.js" type="module"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./App_jQuery.js"></script>
   </body>
 </html>
