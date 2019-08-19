@@ -12,7 +12,8 @@ new Vue({
   },
   mounted(){
     if(Cookies.get("token")){
-      this.axios.defaults.headers.common["Authorization"] = `Token ${ Cookies.get("token") }`
+      const token = Cookies.get("token")
+      this.axios.defaults.headers.common["Authorization"] = `Token ${ token }`
       this.signedIn = true
       this.getLists()
     }
@@ -22,7 +23,7 @@ new Vue({
     addTask(){
       if(this.newTask){
         this.axios
-          .post("/tasks", {title: this.newTask})
+          .post("/tasks", { title: this.newTask })
           .then((task) => {
             this.tasks.unshift(task.data)
             this.newTask = ""
@@ -34,7 +35,7 @@ new Vue({
     // 削除
     onDelete(task, index){
       this.axios
-        .delete(`/tasks/${task.id}`)
+        .delete(`/tasks/${ task.id }`)
         .then(() => {
           this.tasks.splice(index, 1)
         })
@@ -43,7 +44,7 @@ new Vue({
     onCheck(task, index){
       this.axios
         // .patch(`/tasks/${task.id}`, {}, this.httpClient)
-        .patch(`/tasks/${task.id}`)
+        .patch(`/tasks/${ task.id }`)
         .then((task) => {
           this.tasks.splice(index, 1, task.data)
         })
@@ -56,7 +57,8 @@ new Vue({
           password: this.password
         })
         .then((token) => {
-          this.axios.defaults.headers.common["Authorization"] = `Token ${ Cookies.set("token", token.data) }`
+          Cookies.set("token", token.data)
+          this.axios.defaults.headers.common["Authorization"] = `Token ${ token.data }`
           this.signedIn = true
           this.getLists()
        })
