@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="todoapp" class="todoapp">
-      <form id="js-form" @submit.prevent="addTask" v-if="token">
+      <form id="js-form" @submit.prevent="addTask" v-if="signedIn">
         <input
           id="js-form-input"
           class="new-todo"
@@ -18,7 +18,7 @@
           v-model="newTask"
         />
       </form>
-      <div id="js-todo-list" class="todo-list" v-if="token">
+      <div id="js-todo-list" class="todo-list" v-if="signedIn">
         <span v-for="(task, index) in tasks">
           <li>
             <input @click="onCheck(task, index)" class="checkbox" type="checkbox" :checked="task.status == 'completed'">
@@ -28,15 +28,13 @@
           </li>
         </span>
       </div>
-      <footer class="footer" v-if="token">
+      <footer class="footer" v-if="signedIn">
         <span>Todoアイテム数:</span><span>{{ tasks.length }}</span>
       </footer>
-      <div class="footer" v-if="token">
+      <div class="footer" v-if="signedIn">
         <button @click="singOut">singout</button>
       </div>
-
-
-      <form v-if="!token" method="post" @submit.prevent="singIn">
+      <form v-else="signedIn" method="post" @submit.prevent="singIn">
       <table>
         <tr>
           <td>name</td>

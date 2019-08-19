@@ -4,14 +4,16 @@ new Vue({
     return {
       tasks: [],
       newTask: "",
-      token:"",
+      signedIn: false,
       name:"",
-      password:""
+      password:"",
+      axios: axios.create({ baseURL: "http://localhost:3100" })
     }
   },
   mounted(){
     if(Cookies.get("token")){
-      this.token = Cookies.get("token")
+      this.axios.defaults.headers.common["Authorization"] = `Token ${ Cookies.get("token") }`
+      this.signedIn = true
       this.getLists()
     }
   },
@@ -19,12 +21,8 @@ new Vue({
   methods: {
     addTask(){
       if(this.newTask){
-        axios
-          .post("http://localhost:3100/tasks", {
-            title: this.newTask
-          }, {
-            headers: { Authorization: `Token ${this.token}` }
-          })
+        this.axios
+          .post("/tasks", {title: this.newTask})
           .then((task) => {
             this.tasks.unshift(task.data)
             this.newTask = ""
@@ -35,48 +33,52 @@ new Vue({
     },
     // 削除
     onDelete(task, index){
-      axios
-        .delete(`http://localhost:3100/tasks/${task.id}`, { headers: { Authorization: `Token ${this.token}` }})
+      this.axios
+        .delete(`/tasks/${task.id}`)
         .then(() => {
           this.tasks.splice(index, 1)
         })
     },
     // チェック
     onCheck(task, index){
-      axios
-        .patch(`http://localhost:3100/tasks/${task.id}`, {}, { headers: { Authorization: `Token ${this.token}` }})
+      this.axios
+        // .patch(`/tasks/${task.id}`, {}, this.httpClient)
+        .patch(`/tasks/${task.id}`)
         .then((task) => {
           this.tasks.splice(index, 1, task.data)
         })
     },
-    // 一覧
-    getLists(){
-      axios
-        .get("http://localhost:3100/tasks", { headers: { Authorization: `Token ${this.token}` }})
-        .then((tasks) => {
-          this.tasks = tasks.data.reverse()
-        })
-    },
     // サインイン
     singIn(){
-      axios
-        .post("http://localhost:3100/login/login", {
+      this.axios
+        .post("/login", {
           name: this.name,
           password: this.password
         })
         .then((token) => {
-          this.token = token.data
-          Cookies.set("token", this.token)
+          this.axios.defaults.headers.common["Authorization"] = `Token ${ Cookies.set("token", token.data) }`
+          this.signedIn = true
           this.getLists()
        })
        .catch(() => {
          alert("error")
        })
     },
+     // 一覧
+    getLists(){
+      this.axios
+        .get("/tasks")
+        .then((tasks) => {
+          this.tasks = tasks.data.reverse()
+        })
+    },
     // サインアウト
     singOut(){
-      this.token = ""
+      delete this.axios.defaults.headers.common["Authorization"]
       Cookies.remove("token")
+      this.signedIn = false
+      this.name = ""
+      this.password = ""
     }
   }
 })
